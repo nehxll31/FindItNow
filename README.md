@@ -1,12 +1,36 @@
-# React + Vite
+FindItNow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully responsive product search interface built as part of a frontend internship assignment.
 
-Currently, two official plugins are available:
+This React + Vite app uses Tailwind CSS for styling and Firebase for user authentication. It features real-time product search, category filtering, a dark mode toggle, and secure login via Google or email.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+##  Setup Instructions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1.Clone the repository:
+
+git clone https://github.com/nehxll31/FindItNow.git
+cd FindItNow
+
+2.Install dependancies:
+
+npm install
+
+3.Run the app locally:
+
+npm run dev
+
+## Features
+
+Product Listing using FakeStoreAPI
+Search Bar with 300ms debounce
+Category Filter Dropdown
+Product Detail Modal (shown after login)
+Dark Mode Toggle
+Firebase Authentication
+Google Sign-In
+Email/Password Login & Signup
+Loading Indicators & Error Handling
+Fully Responsive Design
+
