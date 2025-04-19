@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { auth } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -8,19 +8,38 @@ function Login({ onToggle }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); 
 
   const handleLogin = async () => {
     setError(""); 
+    setIsLoading(true);
 
-    
     if (!email || !password) {
       setError("Please fill in all fields.");
+      setIsLoading(false);
       return;
     }
 
-    
-    console.log("Login attempt with:", email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Login successful - Firebase handles the redirect
+    } catch (err) {
+      console.error("Login error:", err);
+      let errorMessage = "Login failed. Please try again.";
+      
+      if (err.code === "auth/invalid-email") {
+        errorMessage = "Invalid email address.";
+      } else if (err.code === "auth/user-not-found") {
+        errorMessage = "No account found with this email.";
+      } else if (err.code === "auth/wrong-password") {
+        errorMessage = "Incorrect password.";
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -64,16 +83,20 @@ function Login({ onToggle }) {
           </span>
         </div>
 
-        
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        <button className="text-sm text-red-500 hover:underline self-end">Forgot Password?</button>
+        <button className="text-sm text-red-500 hover:underline self-end">
+          Forgot Password?
+        </button>
 
         <button 
           onClick={handleLogin}  
-          className="w-full bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600"
+          disabled={isLoading}
+          className={`w-full bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
         >
-          Login
+          {isLoading ? "Logging in..." : "Login"}
         </button>
 
         <div className="text-center text-gray-500 text-sm">Or</div>
@@ -87,7 +110,7 @@ function Login({ onToggle }) {
         </button>
 
         <p className="text-center text-sm">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <button onClick={onToggle} className="text-red-500 font-semibold hover:underline">
             Signup
           </button>

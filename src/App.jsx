@@ -12,6 +12,8 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showAuthForm, setShowAuthForm] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -32,7 +34,7 @@ function App() {
       setShowAuthForm(true);
       setShowSignup(false);
     } else {
-      setSelectedProduct(product); // ✅ Triggers modal when logged in
+      setSelectedProduct(product); 
     }
   };
 
@@ -43,7 +45,7 @@ function App() {
 
   return (
     <div key={theme} className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-      {/* Auth modal */}
+      
       {!user && showAuthForm && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto">
           <div className="min-h-screen flex items-center justify-center p-4">
@@ -85,11 +87,18 @@ function App() {
                   {user.displayName || user.email}
                 </span>
                 <button
-                  onClick={logout}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"
-                >
-                  Logout
-                </button>
+               onClick={async () => {
+              setLoggingOut(true);
+            await logout();
+            setLoggingOut(false); 
+              }}
+          disabled={loggingOut}
+          className={`bg-red-500 text-white px-3 py-1 rounded text-sm transition ${
+              loggingOut ? "opacity-60 cursor-not-allowed" : "hover:bg-red-600"
+                  }`}
+              >
+              {loggingOut ? "Logging out..." : "Logout"}
+              </button>
               </div>
             ) : (
               <button
@@ -97,7 +106,7 @@ function App() {
                   setShowAuthForm(true);
                   setShowSignup(false);
                 }}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm transition"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm transition dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-white"
               >
                 Login
               </button>

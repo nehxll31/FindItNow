@@ -61,11 +61,21 @@ function ProductList({ onProductClick, showLoginPrompt }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        {Array(8).fill().map((_, idx) => (
+          <div
+            key={idx}
+            className="animate-pulse bg-white dark:bg-gray-800 p-4 rounded shadow"
+          >
+            <div className="bg-gray-300 dark:bg-gray-700 h-40 w-full mb-4 rounded" />
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2" />
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2" />
+          </div>
+        ))}
       </div>
     );
   }
+  
     
   if (error) {
     return (
@@ -80,25 +90,32 @@ function ProductList({ onProductClick, showLoginPrompt }) {
       <SearchBar onSearch={handleSearch} />
       <CategoryFilter onSelect={handleCategorySelect} />
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
-        {filtered.map((product) => (
-          <div
-            key={product.id}
-            className="bg-white dark:bg-gray-800 shadow-md rounded p-4 hover:shadow-lg transition cursor-pointer"
-            onClick={() => handleProductClick(product)}
-          >
-            <img 
-              src={product.image} 
-              alt={product.title} 
-              className="h-40 mx-auto object-contain" 
-            />
-            <h3 className="mt-2 font-semibold text-md dark:text-white">{product.title}</h3>
-            <p className="text-blue-600 dark:text-blue-400 font-bold">
-            ₹{convertToRupees(product.price)}
-            </p>
-          </div>
-        ))}
+      {filtered.length === 0 ? (
+  <div className="text-center text-gray-500 dark:text-gray-400 mt-8 text-lg">
+    No products match your search.
+  </div>
+) : (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+    {filtered.map((product) => (
+      <div
+        key={product.id}
+        className="bg-white dark:bg-gray-800 shadow-md rounded p-4 hover:shadow-lg transition cursor-pointer"
+        onClick={() => handleProductClick(product)}
+      >
+        <img 
+          src={product.image} 
+          alt={product.title} 
+          className="h-40 mx-auto object-contain" 
+        />
+        <h3 className="mt-2 font-semibold text-md dark:text-white">{product.title}</h3>
+        <p className="text-blue-600 dark:text-blue-400 font-bold">
+          ₹{convertToRupees(product.price)}
+        </p>
       </div>
+    ))}
+  </div>
+)}
+
 
       {selected && !showLoginPrompt && (
         <ProductModal 
