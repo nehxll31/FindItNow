@@ -5,7 +5,6 @@ function DarkModeToggle() {
     document.documentElement.classList.contains('dark')
   );
 
-  // Keep theme in sync when toggle changes
   useEffect(() => {
     if (enabled) {
       document.documentElement.classList.add('dark');
@@ -19,7 +18,7 @@ function DarkModeToggle() {
   return (
     <button
       onClick={() => setEnabled((prev) => !prev)}
-      className="absolute top-4 right-4 bg-gray-200 dark:bg-gray-700 text-sm px-3 py-1 rounded-full shadow hover:scale-105 transition"
+      className="bg-gray-200 dark:bg-gray-700 text-sm px-3 py-1 rounded-full shadow hover:scale-105 transition"
     >
       {enabled ? '🌙 Dark' : '☀️ Light'}
     </button>
