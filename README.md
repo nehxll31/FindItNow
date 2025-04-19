@@ -34,3 +34,4 @@ Email/Password Login & Signup
 Loading Indicators & Error Handling
 Fully Responsive Design
 
+## Live Version of FindItNow url-(https://find-it-now-theta.vercel.app/) 
